@@ -33,36 +33,102 @@ img {
   margin-bottom: 20px;
 }
 
+
+/* cards list style */
+/* עיצוב הרשימה כולה */
 .project-list {
-  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  /* רווח אחיד בין הכרטיסיות */
   padding: 0;
+  margin: 2rem auto;
 }
 
+/* עיצוב כרטיסיה בודדת */
 .project-list-item {
-  font-size: 1.1rem;
-  color: #444;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #ffffff;
+  /* רקע לבן נקי */
+  border: 1px solid #e0e0e0;
+  /* גבול עדין */
+  border-radius: 12px;
+  /* פינות מעוגלות */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  /* צל עדין */
+  width: 300px;
+  /* רוחב קבוע - אפשר להתאים לפי הצורך */
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
 }
 
+/* אפקט hover – כשהעכבר עובר מעל הכרטיס */
 .project-list-item:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
+/* עיצוב הקישור שבתוך הכרטיס */
 .project-link {
+  font-size: 1.2rem;
+  color: #333333;
+  /* צבע כהה עבור קריאות טובה */
   text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
+/* שינוי צבע הקישור בעת hover */
 .project-link:hover {
-  text-decoration: underline;
-  color: #0056b3;
+  color: #0062e6;
+}
+
+.button-group {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* update Card button Style */
+.add-card-button,
+.update-card-home-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.add-card-button:hover,
+.update-card-home-button:hover {
+  background-color: #0052c6;
+}
+/* App.css */
+.button-group {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.add-card-button,
+.update-card-home-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.add-card-button:hover,
+.update-card-home-button:hover {
+  background-color: #0052c6;
 }
 
 /* About page style */
@@ -123,6 +189,26 @@ img {
   font-size: 1.2rem;
   line-height: 1.6;
   color: #555;
+}
+
+.add-card-button-container {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.add-card-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.add-card-button:hover {
+  background-color: #0052c6;
 }
 
 /* contact page style */
