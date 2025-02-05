@@ -6,7 +6,7 @@ import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home";  // Home.jsx
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Signup from "./pages/Signup";
+import Register from "./pages/Register";
 import NewCardForm from "./components/NewCardForm/NewCardForm";
 import EditCardForm from "./components/EditCardForm/EditCardForm";
 import CardPage from "./pages/features/CardPage";
@@ -23,7 +23,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/About" element={<About />} />
           <Route path="/Contact" element={<Contact />} />
-          <Route path="/Signup" element={<Signup />} />
+          <Route path="/Register" element={<Register />} />
           <Route path="/form" element={<NewCardForm />} />
           <Route path="/update" element={<UpdateCardSelection />} />
           <Route path="/edit/:cardSlug" element={<EditCardForm />} />

@@ -1,9 +1,10 @@
 // src/CardsContext.js
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const CardsContext = createContext();
 
 export const CardsProvider = ({ children }) => {
+  // רשימת הכרטיסיות הקבועות (initialCards)
   const initialCards = [
     {
       name: 'User-friendly web interface',
@@ -43,7 +44,16 @@ export const CardsProvider = ({ children }) => {
     }
   ];
 
-  const [cards, setCards] = useState(initialCards);
+  // ננסה לטעון את הכרטיסיות מ־localStorage אם קיימות, אחרת נשתמש ב-initialCards
+  const storedCards = localStorage.getItem('cards');
+  const defaultCards = storedCards ? JSON.parse(storedCards) : initialCards;
+
+  const [cards, setCards] = useState(defaultCards);
+
+  // כל פעם שהכרטיסיות משתנות, נעדכן את ה-localStorage
+  useEffect(() => {
+    localStorage.setItem('cards', JSON.stringify(cards));
+  }, [cards]);
 
   const addCard = (newCard) => {
     setCards([...cards, newCard]);

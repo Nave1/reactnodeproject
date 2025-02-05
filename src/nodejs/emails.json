@@ -1,0 +1,23 @@
+[
+  {
+    "from": "naveshitrit79@gmail.com",
+    "to": "inbox@simulated.com",
+    "subject": "New message from Nave Shitrit",
+    "html": "<p><strong>Name:</strong> Nave Shitrit</p>\n           <p><strong>Email:</strong> naveshitrit79@gmail.com</p>\n           <p><strong>Message:</strong><br/> Hello</p>",
+    "timestamp": "2025-02-05T17:51:22.698Z"
+  },
+  {
+    "from": "vdbfdff@fsdfsfas.com",
+    "to": "inbox@simulated.com",
+    "subject": "New message from Elad",
+    "html": "<p><strong>Name:</strong> Elad</p>\n           <p><strong>Email:</strong> vdbfdff@fsdfsfas.com</p>\n           <p><strong>Message:</strong><br/> Balhsdawsfysadfsa</p>",
+    "timestamp": "2025-02-05T17:53:11.843Z"
+  },
+  {
+    "from": "naveshitrit79@gmail.com",
+    "to": "inbox@simulated.com",
+    "subject": "New message from Nave Shitrit",
+    "html": "<p><strong>Name:</strong> Nave Shitrit</p>\n           <p><strong>Email:</strong> naveshitrit79@gmail.com</p>\n           <p><strong>Message:</strong><br/> hello2</p>",
+    "timestamp": "2025-02-05T18:43:18.849Z"
+  }
+]

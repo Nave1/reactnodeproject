@@ -1,3 +1,4 @@
+/* src/components/NewCardForm/NewCardForm.css */
 .new-card-form-container {
   max-width: 600px;
   margin: 2rem auto;
@@ -22,12 +23,29 @@
   font-weight: bold;
 }
 
+.required-asterisk {
+  color: red;
+  margin-left: 0.25rem;
+}
+
 .new-card-form input,
 .new-card-form textarea {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
 }
 
 .new-card-form textarea {

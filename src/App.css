@@ -69,6 +69,104 @@ img {
   transform: translateY(-8px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
+/* וודא שהכרטיסייה מוגדרת כ-relative כדי שנוכל למקם אלמנטים אבסולוטיים בתוכה */
+.project-list-item {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* מיקום האייקון למחיקה – בצבע זהב, קטן יותר, בפינה הימנית העליונה */
+.delete-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* עיצוב חלון אישור המחיקה */
+.delete-confirmation {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  z-index: 2;
+}
+
+.confirm-delete-button {
+  background-color: red;
+  color: #fff;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.cancel-delete-button {
+  background-color: #ccc;
+  color: #000;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+/* שאר העיצובים (לינקים, כפתורים וכו') נשארים כפי שהוגדרו קודם */
+.project-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  display: block;
+  margin-top: 1rem;
+}
+
+.project-link:hover {
+  text-decoration: underline;
+}
+
+.button-group {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.add-card-button,
+.update-card-home-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.add-card-button:hover,
+.update-card-home-button:hover {
+  background-color: #0052c6;
+}
+
+/* (המשך עיצוב של project-list-item ו- project-link נשאר כפי שהוגדר קודם) */
 
 /* עיצוב הקישור שבתוך הכרטיס */
 .project-link {
@@ -239,12 +337,17 @@ img {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  text-align: left;
 }
 
 .contact-form label {
   font-size: 1rem;
   color: #333;
-  text-align: left;
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 0.25rem;
 }
 
 .contact-form input,
@@ -255,6 +358,17 @@ img {
   border: 1px solid #ddd;
   border-radius: 5px;
   outline: none;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
 }
 
 .contact-form input:focus,
@@ -270,8 +384,95 @@ img {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .contact-form button:hover {
   background-color: #0056b3;
+}
+
+.success-message {
+  color: green;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/* Registration page styles */
+/* Registration page styles */
+.register-container {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.register-container h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.register-form label {
+  font-size: 1rem;
+  color: #333;
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.register-form input:focus {
+  border-color: #007bff;
+}
+
+.register-form button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.register-form button:hover {
+  background-color: #0056b3;
+}
+
+.success-message {
+  color: green;
+  font-size: 1.2rem;
+  margin-top: 20px;
 }

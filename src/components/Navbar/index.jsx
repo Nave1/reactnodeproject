@@ -46,7 +46,7 @@ const Navbar = () => {
         <NavLink to="/Contact" onClick={closeMenu} activeStyle>
           Contact
         </NavLink>
-        <NavLink to="/Signup" onClick={closeMenu} activeStyle>
+        <NavLink to="/Register" onClick={closeMenu} activeStyle>
           Sign Up
         </NavLink>
         <NavBtn>
