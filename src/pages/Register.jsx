@@ -1,6 +1,7 @@
 // src/pages/Register.jsx
 import React, { useState } from 'react';
-import '../App.css';
+import axios from 'axios';
+import '../App.css'; // or import './Register.css' if you prefer a separate CSS file
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,25 +12,42 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+
   const [errors, setErrors] = useState({});
   const [registered, setRegistered] = useState(false);
+
+  // Regex for names: only letters (A-Z, a-z) and spaces allowed
+  const nameRegex = /^[A-Za-z\s]+$/;
+  // Regex for idNumber: digits only
+  const idRegex = /^\d+$/;
+  // Regex for password: at least 8 characters, including uppercase, lowercase and a number
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
 
-  // Handle changes and perform real-time validation
+  // Real-time validation on input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
     let error = '';
+
     if (value.trim() === '') {
       error = `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
     } else {
+      if ((name === 'firstName' || name === 'lastName') && !nameRegex.test(value)) {
+        error = `${name === 'firstName' ? 'First Name' : 'Last Name'} must contain only letters`;
+      }
+      if (name === 'idNumber' && !idRegex.test(value)) {
+        error = 'ID Number must contain only digits';
+      }
       if (name === 'email' && !validateEmail(value)) {
         error = 'Invalid email address';
+      }
+      if (name === 'password' && !passwordRegex.test(value)) {
+        error = 'Password must be at least 8 characters and include uppercase, lowercase letters, and numbers';
       }
       if (name === 'confirmPassword' && value !== formData.password) {
         error = 'Passwords do not match';
@@ -41,20 +59,41 @@ const Register = () => {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Final validation check
     const newErrors = {
-      firstName: formData.firstName.trim() === '' ? 'First Name is required' : '',
-      lastName: formData.lastName.trim() === '' ? 'Last Name is required' : '',
-      idNumber: formData.idNumber.trim() === '' ? 'ID Number is required' : '',
+      firstName:
+        formData.firstName.trim() === ''
+          ? 'First Name is required'
+          : !nameRegex.test(formData.firstName)
+            ? 'First Name must contain only letters'
+            : '',
+      lastName:
+        formData.lastName.trim() === ''
+          ? 'Last Name is required'
+          : !nameRegex.test(formData.lastName)
+            ? 'Last Name must contain only letters'
+            : '',
+      idNumber:
+        formData.idNumber.trim() === ''
+          ? 'ID Number is required'
+          : !idRegex.test(formData.idNumber)
+            ? 'ID Number must contain only digits'
+            : '',
       email:
         formData.email.trim() === ''
           ? 'Email is required'
           : !validateEmail(formData.email)
             ? 'Invalid email address'
             : '',
-      password: formData.password.trim() === '' ? 'Password is required' : '',
+      password:
+        formData.password.trim() === ''
+          ? 'Password is required'
+          : !passwordRegex.test(formData.password)
+            ? 'Password must be at least 8 characters and include uppercase, lowercase letters, and numbers'
+            : '',
       confirmPassword:
         formData.confirmPassword.trim() === ''
           ? 'Confirm Password is required'
@@ -62,35 +101,34 @@ const Register = () => {
             ? 'Passwords do not match'
             : '',
     };
-    setErrors(newErrors);
 
+    setErrors(newErrors);
     if (Object.values(newErrors).some((err) => err !== '')) {
       return;
     }
 
-    // Send a POST request to the Node.js server
-    fetch('http://localhost:5001/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        idNumber: formData.idNumber,
-        email: formData.email,
-        password: formData.password,
-      }),
+    // Send registration data to the server
+    axios.post('http://localhost:5001/register', {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      idNumber: formData.idNumber,
+      email: formData.email,
+      password: formData.password,
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
+      .then(response => {
+        if(response.success)
+        {
+          console.log('Response:', response.data);
+          console.log("Registration Data:", formData);
           setRegistered(true);
-        } else {
-          alert('Error signing up.');
+        }
+        else
+        {
+          // input new error if user is already exists
         }
       })
-      .catch((err) => {
-        console.error(err);
-        alert('Error signing up.');
+      .catch(error => {
+        console.error('Error:', error);
       });
   };
 
@@ -105,7 +143,7 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <h1>Register</h1>
+      <h1>Sign Up</h1>
       <form className="register-form" onSubmit={handleSubmit}>
         <label htmlFor="firstName">
           First Name:<span className="required-asterisk">*</span>
@@ -197,7 +235,7 @@ const Register = () => {
         />
         {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
 
-        <button type="submit">Register</button>
+        <button type="submit">Sign Up</button>
       </form>
     </div>
   );

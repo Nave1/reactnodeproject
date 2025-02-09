@@ -398,11 +398,12 @@ img {
 }
 
 /* Registration page styles */
-/* Registration page styles */
+/* src/pages/Register.css */
 .register-container {
   padding: 20px;
   margin: 20px auto;
-  max-width: 800px;
+  max-width: 600px;
+  /* Reduced width */
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
