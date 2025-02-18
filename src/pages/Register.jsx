@@ -1,7 +1,7 @@
 // src/pages/Register.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../App.css'; // or import './Register.css' if you prefer a separate CSS file
+import '../App.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const Register = () => {
   const nameRegex = /^[A-Za-z\s]+$/;
   // Regex for idNumber: digits only
   const idRegex = /^\d+$/;
-  // Regex for password: at least 8 characters, including uppercase, lowercase and a number
+  // Regex for password: at least 8 characters, at least one uppercase, one lowercase, and one digit
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const validateEmail = (email) => {
@@ -47,7 +47,8 @@ const Register = () => {
         error = 'Invalid email address';
       }
       if (name === 'password' && !passwordRegex.test(value)) {
-        error = 'Password must be at least 8 characters and include uppercase, lowercase letters, and numbers';
+        error =
+          'Password must be at least 8 characters and include uppercase, lowercase letters, and numbers';
       }
       if (name === 'confirmPassword' && value !== formData.password) {
         error = 'Passwords do not match';
@@ -107,6 +108,9 @@ const Register = () => {
       return;
     }
 
+    // Debug: log the data being sent
+    console.log("Submitting registration data:", formData);
+
     // Send registration data to the server
     axios.post('http://localhost:5001/register', {
       firstName: formData.firstName,
@@ -115,20 +119,26 @@ const Register = () => {
       email: formData.email,
       password: formData.password,
     })
-      .then(response => {
-        if(response.success)
-        {
-          console.log('Response:', response.data);
-          console.log("Registration Data:", formData);
+      .then((response) => {
+        console.log('Response:', response.data);
+        if (response.data.success) {
           setRegistered(true);
-        }
-        else
-        {
-          // input new error if user is already exists
+        } else {
+          // If the server indicates a duplicate or other error, show an alert
+          alert(response.data.message || 'Error signing up.');
         }
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error('Error signing up:', error);
+        if (error.response && error.response.data && error.response.data.error) {
+          if (error.response.data.error.includes("Duplicate entry")) {
+            alert("User already exists.");
+          } else {
+            alert("Error signing up: " + error.response.data.error);
+          }
+        } else {
+          alert("Error signing up.");
+        }
       });
   };
 

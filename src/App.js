@@ -12,6 +12,7 @@ import EditCardForm from "./components/EditCardForm/EditCardForm";
 import CardPage from "./pages/features/CardPage";
 import UpdateCardSelection from "./components/UpdateCardSelection/UpdateCardSelection";
 import { CardsProvider } from './CardsContext';
+import Login from './pages/Login';
 import "./App.css";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/update" element={<UpdateCardSelection />} />
           <Route path="/edit/:cardSlug" element={<EditCardForm />} />
           <Route path="/feature/:cardSlug" element={<CardPage />} />
+          <Route path="/Login" element={<Login />} />
         </Routes>
         <Footer />
       </CardsProvider>

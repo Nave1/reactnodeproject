@@ -35,41 +35,33 @@ img {
 
 
 /* cards list style */
-/* עיצוב הרשימה כולה */
 .project-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
-  /* רווח אחיד בין הכרטיסיות */
   padding: 0;
   margin: 2rem auto;
 }
 
-/* עיצוב כרטיסיה בודדת */
+
 .project-list-item {
   background-color: #ffffff;
-  /* רקע לבן נקי */
   border: 1px solid #e0e0e0;
-  /* גבול עדין */
   border-radius: 12px;
-  /* פינות מעוגלות */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  /* צל עדין */
   width: 300px;
-  /* רוחב קבוע - אפשר להתאים לפי הצורך */
   padding: 20px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
 }
 
-/* אפקט hover – כשהעכבר עובר מעל הכרטיס */
 .project-list-item:hover {
   transform: translateY(-8px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
-/* וודא שהכרטיסייה מוגדרת כ-relative כדי שנוכל למקם אלמנטים אבסולוטיים בתוכה */
+
 .project-list-item {
   position: relative;
   background-color: #fff;
@@ -82,7 +74,6 @@ img {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* מיקום האייקון למחיקה – בצבע זהב, קטן יותר, בפינה הימנית העליונה */
 .delete-icon {
   position: absolute;
   top: 0.5rem;
@@ -93,7 +84,6 @@ img {
   cursor: pointer;
 }
 
-/* עיצוב חלון אישור המחיקה */
 .delete-confirmation {
   position: absolute;
   top: 0.5rem;
@@ -130,7 +120,6 @@ img {
   font-size: 0.8rem;
 }
 
-/* שאר העיצובים (לינקים, כפתורים וכו') נשארים כפי שהוגדרו קודם */
 .project-link {
   text-decoration: none;
   color: #007bff;
@@ -166,18 +155,13 @@ img {
   background-color: #0052c6;
 }
 
-/* (המשך עיצוב של project-list-item ו- project-link נשאר כפי שהוגדר קודם) */
-
-/* עיצוב הקישור שבתוך הכרטיס */
 .project-link {
   font-size: 1.2rem;
   color: #333333;
-  /* צבע כהה עבור קריאות טובה */
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-/* שינוי צבע הקישור בעת hover */
 .project-link:hover {
   color: #0062e6;
 }
@@ -398,12 +382,10 @@ img {
 }
 
 /* Registration page styles */
-/* src/pages/Register.css */
 .register-container {
   padding: 20px;
   margin: 20px auto;
   max-width: 600px;
-  /* Reduced width */
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -469,6 +451,87 @@ img {
 }
 
 .register-form button:hover {
+  background-color: #0056b3;
+}
+
+.success-message {
+  color: green;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/* Login page style */
+/* src/pages/Login.css */
+.login-container {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  /* Reduced form width */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-container h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.login-form label {
+  font-size: 1rem;
+  color: #333;
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.login-form input:focus {
+  border-color: #007bff;
+}
+
+.login-form button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-form button:hover {
   background-color: #0056b3;
 }
 

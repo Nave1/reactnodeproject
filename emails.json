@@ -19,5 +19,12 @@
     "subject": "New message from Nave Shitrit",
     "html": "<p><strong>Name:</strong> Nave Shitrit</p>\n           <p><strong>Email:</strong> naveshitrit79@gmail.com</p>\n           <p><strong>Message:</strong><br/> Hello 5</p>",
     "timestamp": "2025-02-08T17:04:34.655Z"
+  },
+  {
+    "from": "naveshitrit79@gmail.com",
+    "to": "inbox@simulated.com",
+    "subject": "New message from Nave Shitrit",
+    "html": "<p><strong>Name:</strong> Nave Shitrit</p>\n           <p><strong>Email:</strong> naveshitrit79@gmail.com</p>\n           <p><strong>Message:</strong><br/> hfg</p>",
+    "timestamp": "2025-02-12T17:09:16.517Z"
   }
 ]
