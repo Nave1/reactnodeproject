@@ -8,20 +8,17 @@ const Contact = () => {
     email: '',
     message: '',
   });
-
   const [errors, setErrors] = useState({});
   const [emailSent, setEmailSent] = useState(false);
 
-  // Function to validate email format
+  // Validate email format
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
 
-  // Handle changes in input fields with real-time validation
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     let error = '';
@@ -30,31 +27,33 @@ const Contact = () => {
     } else if (name === 'email' && !validateEmail(value)) {
       error = 'Invalid email address';
     }
-
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newErrors = {
       name: formData.name.trim() === '' ? 'Name is required' : '',
-      email: formData.email.trim() === '' ? 'Email is required' : !validateEmail(formData.email) ? 'Invalid email address' : '',
+      email:
+        formData.email.trim() === ''
+          ? 'Email is required'
+          : !validateEmail(formData.email)
+            ? 'Invalid email address'
+            : '',
       message: formData.message.trim() === '' ? 'Message is required' : '',
     };
 
     setErrors(newErrors);
 
-    if (Object.values(newErrors).some(err => err !== '')) {
+    if (Object.values(newErrors).some((err) => err !== '')) {
       return;
     }
 
-    // Send a POST request to the Node.js server
     fetch('http://localhost:5001/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -83,8 +82,7 @@ const Contact = () => {
     <div className="contact-container">
       <h1>Contact Us</h1>
       <p>
-        If you have any questions, feedback, or suggestions, feel free to reach out
-        to us using the form below:
+        If you have any questions, feedback, or suggestions, feel free to reach out to us using the form below:
       </p>
       <form className="contact-form" onSubmit={handleSubmit}>
         <label htmlFor="name">

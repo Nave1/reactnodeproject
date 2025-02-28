@@ -16,7 +16,6 @@ img {
 /* Home page style */
 .home-container {
   text-align: center;
-  padding: 20px;
   background-color: #f4f4f9;
   min-height: 100vh;
 }
@@ -28,9 +27,18 @@ img {
 }
 
 .home-container p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #555;
   margin-bottom: 20px;
+}
+
+.default-image {
+  width: 100%;
+  /* Full width of its container */
+  height: 400px;
+  /* Adjust this value to match your HeroSection height */
+  object-fit: cover;
+  /* Crop the image as needed to fill the container */
 }
 
 
@@ -41,17 +49,18 @@ img {
   justify-content: center;
   gap: 2rem;
   padding: 0;
-  margin: 2rem auto;
+  margin: auto;
 }
 
 
 .project-list-item {
+  position: relative;
   background-color: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   width: 300px;
-  padding: 20px;
+  padding: 1.5rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
@@ -59,7 +68,7 @@ img {
 
 .project-list-item:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .project-list-item {
@@ -74,62 +83,113 @@ img {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Card title and content */
+.project-list-item h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.card-id {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Enhanced Delete button */
 .delete-icon {
   position: absolute;
   top: 0.5rem;
-  right: 0.5rem;
-  background: none;
+  right: 0.75rem;
+  color: white;
   border: none;
-  font-size: 1.2rem;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
   cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
 }
 
+
+/* Enhanced Delete confirmation */
 .delete-confirmation {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0.5rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+}
+
+.delete-confirmation p {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.delete-buttons {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.3rem;
+  gap: 0.5rem;
+}
+
+.confirm-delete-button,
+.cancel-delete-button {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
   font-size: 0.8rem;
-  z-index: 2;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
 }
 
 .confirm-delete-button {
-  background-color: red;
-  color: #fff;
-  border: none;
-  padding: 0.3rem 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8rem;
+  background-color: #ff4d4d;
+  color: white;
 }
 
 .cancel-delete-button {
-  background-color: #ccc;
-  color: #000;
-  border: none;
-  padding: 0.3rem 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8rem;
+  background-color: #e0e0e0;
+  color: #333;
 }
 
+/* Checkbox styling */
+.select-checkbox {
+  position: absolute;
+  top: 0.7rem;
+  right: 2.25rem;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Enhanced View Details button */
 .project-link {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
   display: block;
-  margin-top: 1rem;
+  text-decoration: none;
+  color: #0062e6;
+  font-weight: 600;
+  padding: 0.75rem;
+  margin: 1rem 0;
+  border: 1px solid #0062e6;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
 .project-link:hover {
-  text-decoration: underline;
+  background-color: #0062e6;
+  color: white;
+  text-decoration: none;
 }
 
 .button-group {
@@ -156,14 +216,14 @@ img {
 }
 
 .project-link {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #333333;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .project-link:hover {
-  color: #0062e6;
+  color: #fff;
 }
 
 .button-group {
@@ -211,6 +271,60 @@ img {
 .add-card-button:hover,
 .update-card-home-button:hover {
   background-color: #0052c6;
+}
+
+/* Card status borders */
+.card-closed {
+  opacity: 0.85;
+  border-left: 5px solid #757575;
+}
+
+.card-open {
+  border-left: 5px solid #4CAF50;
+}
+
+/* Status styles */
+.card-status-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 0;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.status-open {
+  background-color: #4CAF50;
+}
+
+.status-closed {
+  background-color: #757575;
+}
+
+/* Card with status indicator needs extra padding */
+.has-status {
+  padding-top: 2.5rem;
+}
+
+/* Close Task button */
+.close-task-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.close-task-button:hover {
+  background-color: #c82333;
 }
 
 /* About page style */
@@ -539,4 +653,44 @@ img {
   color: green;
   font-size: 1.2rem;
   margin-top: 20px;
+}
+
+/* filter buttons */
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+}
+
+.filter-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+  background-color: #e0e0e0;
+}
+
+.filter-button.active {
+  background-color: #0062e6;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 98, 230, 0.2);
+}
+
+.filter-button.active:nth-child(2) {
+  background-color: #4CAF50;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+}
+
+.filter-button.active:nth-child(3) {
+  background-color: #757575;
+  box-shadow: 0 2px 4px rgba(117, 117, 117, 0.2);
 }

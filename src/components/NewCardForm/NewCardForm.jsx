@@ -1,220 +1,192 @@
 // src/components/NewCardForm/NewCardForm.jsx
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { CardsContext } from '../../CardsContext';
-import "./NewCardForm.css";
+import "./NewCardForm.css"; // Make sure this file exists
 
 const NewCardForm = () => {
-  // State לשדות הטופס
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
+  const { addCard } = useContext(CardsContext);
+  const navigate = useNavigate();
+
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [city, setCity] = useState("");
+  const [street, setStreet] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
 
-  // state לאחסון הודעות שגיאה לכל שדה
   const [errors, setErrors] = useState({
-    title: '',
-    content: '',
-    email: '',
-    address: '',
-    image: '',
+    fullName: "",
+    phoneNumber: "",
+    city: "",
+    street: "",
+    title: "",
+    description: "",
+    image: "",
   });
 
-  const navigate = useNavigate();
-  const { addCard } = useContext(CardsContext);
+  // Validate user role
+  useEffect(() => {
+    const storedUser = Cookies.get('user');
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        if (userData.role !== "user") {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error parsing user cookie:", error);
+      }
+    }
+  }, [navigate]);
 
-  // פונקציה לבדיקת תקינות אימייל
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
-  // פונקציות onChange לכל שדה, שמעדכנות גם את הודעות השגיאה בזמן אמת
   const handleTitleChange = (e) => {
     const value = e.target.value;
     setTitle(value);
-    setErrors((prev) => ({
-      ...prev,
-      title: value.trim() === '' ? 'Title is required' : '',
-    }));
+    if (value.trim() === "") {
+      setErrors(prev => ({ ...prev, title: "Title is required" }));
+    } else {
+      setErrors(prev => ({ ...prev, title: "" }));
+    }
   };
 
-  const handleContentChange = (e) => {
-    const value = e.target.value;
-    setContent(value);
-    setErrors((prev) => ({
-      ...prev,
-      content: value.trim() === '' ? 'Content is required' : '',
-    }));
-  };
-
-  const handleEmailChange = (e) => {
-    const value = e.target.value;
-    setEmail(value);
-    let error = '';
-    if (value.trim() === '') error = 'Email is required';
-    else if (!validateEmail(value)) error = 'Invalid email';
-    setErrors((prev) => ({
-      ...prev,
-      email: error,
-    }));
-  };
-
-  const handleAddressChange = (e) => {
-    const value = e.target.value;
-    setAddress(value);
-    setErrors((prev) => ({
-      ...prev,
-      address: value.trim() === '' ? 'Address is required' : '',
-    }));
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setErrors((prev) => ({
-      ...prev,
-      image: file ? '' : 'Image is required',
-    }));
-  };
-
-  // פונקציה ליצירת slug מהכותרת – המרה לאותיות קטנות והחלפת רווחים במקף
-  const createSlug = (title) =>
-    title.toLowerCase().trim().replace(/\s+/g, '-');
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // בדיקה סופית לכל השדות
+    // Validate fields
     const newErrors = {
-      title: title.trim() === '' ? 'Title is required' : '',
-      content: content.trim() === '' ? 'Content is required' : '',
-      email:
-        email.trim() === ''
-          ? 'Email is required'
-          : !validateEmail(email)
-            ? 'Invalid email'
-            : '',
-      address: address.trim() === '' ? 'Address is required' : '',
-      image: image ? '' : 'Image is required',
+      fullName: fullName.trim() === "" ? "Full Name is required" : "",
+      phoneNumber: phoneNumber.trim() === "" ? "Phone Number is required" : "",
+      city: city.trim() === "" ? "City is required" : "",
+      street: street.trim() === "" ? "Street is required" : "",
+      title: title.trim() === "" ? "Title is required" : "",
+      description: description.trim() === "" ? "Description is required" : "",
+      image: !image ? "Image is required" : "",
     };
 
     setErrors(newErrors);
-
-    // אם קיימת הודעת שגיאה כלשהי, לא נמשיך בהגשה
-    if (Object.values(newErrors).some((err) => err !== '')) {
+    if (Object.values(newErrors).some(err => err !== "")) {
       return;
     }
 
-    const slug = createSlug(title);
-    const newCard = {
-      name: title,
-      slug,
-      path: `/feature/${slug}`,
-      content,
-      email,
-      address,
-      image,
-    };
+    // Create FormData object for multipart/form-data submission
+    const formData = new FormData();
+    formData.append('fullName', fullName);
+    formData.append('phoneNumber', phoneNumber);
+    formData.append('city', city);
+    formData.append('street', street);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('image', image);
 
-    addCard(newCard);
-    navigate(`/feature/${slug}`);
+    try {
+      // Call the addCard function from context
+      await addCard(formData);
+
+      // Navigate to the home page after successful card creation
+      navigate("/");
+    } catch (error) {
+      console.error("Error creating card:", error);
+      alert("There was an error creating the card. Please try again.");
+    }
   };
 
   return (
     <div className="new-card-form-container">
-      <h2>Add New Card</h2>
-      <form onSubmit={handleSubmit} className="new-card-form">
+      <h2>Create New Card</h2>
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className="new-card-form">
         <div className="form-group">
-          <label htmlFor="title">
-            Title:<span className="required-asterisk">*</span>
-          </label>
+          <label htmlFor="fullName">Full Name:<span className="required-asterisk">*</span></label>
+          <input
+            id="fullName"
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+            className={errors.fullName ? "input-error" : ""}
+          />
+          {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="phoneNumber">Phone Number:<span className="required-asterisk">*</span></label>
+          <input
+            id="phoneNumber"
+            type="text"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+            className={errors.phoneNumber ? "input-error" : ""}
+          />
+          {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="city">City:<span className="required-asterisk">*</span></label>
+          <input
+            id="city"
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+            className={errors.city ? "input-error" : ""}
+          />
+          {errors.city && <span className="error-message">{errors.city}</span>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="street">Street:<span className="required-asterisk">*</span></label>
+          <input
+            id="street"
+            type="text"
+            value={street}
+            onChange={(e) => setStreet(e.target.value)}
+            required
+            className={errors.street ? "input-error" : ""}
+          />
+          {errors.street && <span className="error-message">{errors.street}</span>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="title">Title:<span className="required-asterisk">*</span></label>
           <input
             id="title"
             type="text"
             value={title}
             onChange={handleTitleChange}
             required
-            className={errors.title ? 'input-error' : ''}
+            className={errors.title ? "input-error" : ""}
           />
-          {errors.title && (
-            <span className="error-message">{errors.title}</span>
-          )}
+          {errors.title && <span className="error-message">{errors.title}</span>}
         </div>
-
         <div className="form-group">
-          <label htmlFor="content">
-            Content:<span className="required-asterisk">*</span>
-          </label>
+          <label htmlFor="description">Description:<span className="required-asterisk">*</span></label>
           <textarea
-            id="content"
-            value={content}
-            onChange={handleContentChange}
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
-            className={errors.content ? 'input-error' : ''}
+            className={errors.description ? "input-error" : ""}
           />
-          {errors.content && (
-            <span className="error-message">{errors.content}</span>
-          )}
+          {errors.description && <span className="error-message">{errors.description}</span>}
         </div>
-
         <div className="form-group">
-          <label htmlFor="email">
-            Email:<span className="required-asterisk">*</span>
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={handleEmailChange}
-            required
-            className={errors.email ? 'input-error' : ''}
-          />
-          {errors.email && (
-            <span className="error-message">{errors.email}</span>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="address">
-            Address:<span className="required-asterisk">*</span>
-          </label>
-          <input
-            id="address"
-            type="text"
-            value={address}
-            onChange={handleAddressChange}
-            placeholder="Enter address"
-            required
-            className={errors.address ? 'input-error' : ''}
-          />
-          {errors.address && (
-            <span className="error-message">{errors.address}</span>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="image">
-            Image:
-            <span className="required-asterisk">*</span>
-          </label>
+          <label htmlFor="image">Image:<span className="required-asterisk">*</span></label>
           <input
             id="image"
             type="file"
             accept="image/*"
             onChange={handleImageChange}
             required
-            className={errors.image ? 'input-error' : ''}
+            className={errors.image ? "input-error" : ""}
           />
-          {errors.image && (
-            <span className="error-message">{errors.image}</span>
-          )}
+          {errors.image && <span className="error-message">{errors.image}</span>}
         </div>
-
-        <button type="submit" className="submit-button">
-          Add New Card
-        </button>
+        <div className="form-group">
+          <button type="submit" className="submit-button">Create Card</button>
+        </div>
       </form>
     </div>
   );

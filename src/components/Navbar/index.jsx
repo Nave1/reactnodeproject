@@ -1,4 +1,3 @@
-// src/components/Navbar/index.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -17,7 +16,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // קבלת המיקום הנוכחי
+  const location = useLocation(); // get current location
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -27,7 +26,7 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  // useEffect שירוץ בכל פעם שהמיקום (location) משתנה
+  // useEffect that willl run (location) whenever location is changes (by location the meaning is moving between pages).
   useEffect(() => {
     const storedUser = Cookies.get('user');
     if (storedUser) {
@@ -44,7 +43,7 @@ const Navbar = () => {
   const handleLogout = () => {
     Cookies.remove('user');
     setUser(null);
-    navigate('/'); // ניתוב לעמוד הבית לאחר התנתקות
+    navigate('/'); // navigate to home page after logout
   };
 
   return (
@@ -63,15 +62,9 @@ const Navbar = () => {
       </Hamburger>
 
       <NavMenu isOpen={isOpen}>
-        <NavLink to="/About" onClick={closeMenu}>
-          About
-        </NavLink>
-        <NavLink to="/Contact" onClick={closeMenu}>
-          Contact
-        </NavLink>
+        
         {user ? (
           <>
-            {/* הודעת welcome מעוצבת בצבע זהב ובטקסט מודגש */}
             <span style={{ color: '#ffd700', marginLeft: '20px', fontWeight: 'bold' }}>
               Welcome, {user.firstName}!
             </span>

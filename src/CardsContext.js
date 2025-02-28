@@ -1,78 +1,94 @@
 // src/CardsContext.js
 import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 export const CardsContext = createContext();
 
 export const CardsProvider = ({ children }) => {
-  // רשימת הכרטיסיות הקבועות (initialCards)
-  const initialCards = [
-    {
-      name: 'User-friendly web interface',
-      slug: 'user-friendly-web-interface',
-      path: '/feature/user-friendly-web-interface',
-      content: 'Content for User-friendly web interface.'
-    },
-    {
-      name: 'Interactive map',
-      slug: 'interactive-map',
-      path: '/feature/interactive-map',
-      content: 'Content for Interactive map.'
-    },
-    {
-      name: 'Real-time updates',
-      slug: 'real-time-updates',
-      path: '/feature/real-time-updates',
-      content: 'Content for Real-time updates.'
-    },
-    {
-      name: 'Notifications for city councils',
-      slug: 'notifications-for-city-councils',
-      path: '/feature/notifications-for-city-councils',
-      content: 'Content for Notifications for city councils.'
-    },
-    {
-      name: 'Efficient database',
-      slug: 'efficient-database',
-      path: '/feature/efficient-database',
-      content: 'Content for Efficient database.'
-    },
-    {
-      name: 'Mobile-friendly design',
-      slug: 'mobile-friendly-design',
-      path: '/feature/mobile-friendly-design',
-      content: 'Content for Mobile-friendly design.'
+  const [cards, setCards] = useState([]);
+
+  // Function to fetch cards from the database
+  const fetchCards = async () => {
+    try {
+      const response = await axios.get('http://localhost:5001/cards');
+      setCards(response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching cards:', error);
+      throw error;
     }
-  ];
+  };
 
-  // ננסה לטעון את הכרטיסיות מ־localStorage אם קיימות, אחרת נשתמש ב-initialCards
-  const storedCards = localStorage.getItem('cards');
-  const defaultCards = storedCards ? JSON.parse(storedCards) : initialCards;
-
-  const [cards, setCards] = useState(defaultCards);
-
-  // כל פעם שהכרטיסיות משתנות, נעדכן את ה-localStorage
+  // Fetch cards when the provider mounts
   useEffect(() => {
-    localStorage.setItem('cards', JSON.stringify(cards));
-  }, [cards]);
+    fetchCards();
+  }, []);
 
-  const addCard = (newCard) => {
-    setCards([...cards, newCard]);
+  // Function to add a card (expects FormData)
+  const addCard = async (formData) => {
+    try {
+      const response = await axios.post('http://localhost:5001/cards', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      await fetchCards();
+      return response.data; // Now contains slug too
+    } catch (error) {
+      console.error('Error adding card:', error);
+      throw error;
+    }
   };
 
-  const updateCard = (slug, updatedData) => {
-    setCards(
-      cards.map((card) =>
-        card.slug === slug ? { ...card, ...updatedData } : card
-      )
-    );
+  // Function to update a card (expects FormData)
+  // Updated to return a promise so we can await it
+  const updateCard = async (slug, formData) => {
+    try {
+      // First find the card by slug to get its ID
+      const cardToUpdate = cards.find(card => card.slug === slug);
+
+      if (!cardToUpdate) {
+        throw new Error('Card not found with slug: ' + slug);
+      }
+
+      // Use the card's ID for the backend API call
+      const response = await axios.put(`http://localhost:5001/cards/${cardToUpdate.id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      // Refetch all cards to ensure we have the latest data
+      await fetchCards();
+      return response.data; // Contains the new slug if title was changed
+    } catch (error) {
+      console.error('Error updating card:', error);
+      throw error;
+    }
   };
 
-  const deleteCard = (slug) => {
-    setCards(cards.filter((card) => card.slug !== slug));
+  // Function to delete a card
+  const deleteCard = async (slug) => {
+    try {
+      const response = await axios.delete(`http://localhost:5001/cards/${slug}`);
+      await fetchCards();
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting card:', error);
+      throw error;
+    }
+  };
+
+  // Function to close a card (set status to "closed")
+  const closeTask = async (slug) => {
+    try {
+      const response = await axios.put(`http://localhost:5001/cards/${slug}/close`);
+      await fetchCards();
+      return response.data;
+    } catch (error) {
+      console.error('Error closing card:', error);
+      throw error;
+    }
   };
 
   return (
-    <CardsContext.Provider value={{ cards, addCard, updateCard, deleteCard }}>
+    <CardsContext.Provider value={{ cards, addCard, updateCard, deleteCard, closeTask }}>
       {children}
     </CardsContext.Provider>
   );

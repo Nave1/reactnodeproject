@@ -51,3 +51,22 @@
 .update-card-button:hover {
   background-color: #e6c200;
 }
+
+/* Add these styles to your existing UpdateCardSelection.css file */
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-name {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.card-id {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
