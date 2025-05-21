@@ -1,0 +1,697 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sora:wght@100..800&display=swap');
+
+
+* {
+  font-family: 'Sora', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  height: 10rem;
+  width:10rem;
+}
+
+/* Home page style */
+.home-container {
+  text-align: center;
+  background-color: #f4f4f9;
+  min-height: 100vh;
+}
+
+.home-container h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.home-container p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.default-image {
+  width: 100%;
+  /* Full width of its container */
+  height: 400px;
+  /* Adjust this value to match your HeroSection height */
+  object-fit: cover;
+  /* Crop the image as needed to fill the container */
+}
+
+
+/* cards list style */
+.project-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: auto;
+  list-style: none;
+}
+
+
+.project-list-item {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  width: 300px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.project-list-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.project-list-item {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card title and content */
+.project-list-item h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.card-id {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Enhanced Delete button */
+.delete-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  color: white;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+
+/* Enhanced Delete confirmation */
+.delete-confirmation {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+}
+
+.delete-confirmation p {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.delete-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.confirm-delete-button,
+.cancel-delete-button {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.confirm-delete-button {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.cancel-delete-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+/* Checkbox styling */
+.select-checkbox {
+  position: absolute;
+  top: 0.7rem;
+  right: 2.25rem;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Enhanced View Details button */
+.project-link {
+  display: block;
+  text-decoration: none;
+  color: #0062e6;
+  font-weight: 600;
+  padding: 0.75rem;
+  margin: 1rem 0;
+  border: 1px solid #0062e6;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.project-link:hover {
+  background-color: #0062e6;
+  color: white;
+  text-decoration: none;
+}
+
+.button-group {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.add-card-button,
+.update-card-home-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.add-card-button:hover,
+.update-card-home-button:hover {
+  background-color: #0052c6;
+}
+
+.project-link {
+  font-size: 1rem;
+  color: #333333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.project-link:hover {
+  color: #fff;
+}
+
+.button-group {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* update Card button Style */
+.add-card-button,
+.update-card-home-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.add-card-button:hover,
+.update-card-home-button:hover {
+  background-color: #0052c6;
+}
+/* App.css */
+.button-group {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.add-card-button,
+.update-card-home-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.add-card-button:hover,
+.update-card-home-button:hover {
+  background-color: #0052c6;
+}
+
+/* Card status borders */
+.card-closed {
+  opacity: 0.85;
+  border-left: 5px solid #757575;
+}
+
+.card-open {
+  border-left: 5px solid #4CAF50;
+}
+
+/* Status styles */
+.card-status-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 0;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.status-open {
+  background-color: #4CAF50;
+}
+
+.status-closed {
+  background-color: #757575;
+}
+
+/* Card with status indicator needs extra padding */
+.has-status {
+  padding-top: 2.5rem;
+}
+
+/* Close Task button */
+.close-task-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.close-task-button:hover {
+  background-color: #c82333;
+}
+
+/* About page style */
+.about-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.about-content {
+  text-align: center;
+  max-width: 800px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.about-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.about-description h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.about-description p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* feature pages style */
+.feature-container {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.feature-container h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.feature-container p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.add-card-button-container {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.add-card-button {
+  display: inline-block;
+  background-color: #0062e6;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.add-card-button:hover {
+  background-color: #0052c6;
+}
+
+/* contact page style */
+.contact-container {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.contact-container h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.contact-container p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.contact-form label {
+  font-size: 1rem;
+  color: #333;
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #007bff;
+}
+
+.contact-form button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: #0056b3;
+}
+
+.success-message {
+  color: green;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/* Registration page styles */
+.register-container {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.register-container h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.register-form label {
+  font-size: 1rem;
+  color: #333;
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.register-form input:focus {
+  border-color: #007bff;
+}
+
+.register-form button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.register-form button:hover {
+  background-color: #0056b3;
+}
+
+.success-message {
+  color: green;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/* Login page style */
+/* src/pages/Login.css */
+.login-container {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
+  /* Reduced form width */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-container h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.login-form label {
+  font-size: 1rem;
+  color: #333;
+}
+
+.required-asterisk {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.login-form input:focus {
+  border-color: #007bff;
+}
+
+.login-form button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+.success-message {
+  color: green;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+/* filter buttons */
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+}
+
+.filter-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+  background-color: #e0e0e0;
+}
+
+.filter-button.active {
+  background-color: #0062e6;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 98, 230, 0.2);
+}
+
+.filter-button.active:nth-child(2) {
+  background-color: #4CAF50;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+}
+
+.filter-button.active:nth-child(3) {
+  background-color: #757575;
+  box-shadow: 0 2px 4px rgba(117, 117, 117, 0.2);
+}
