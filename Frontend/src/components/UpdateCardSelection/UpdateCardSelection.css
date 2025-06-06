@@ -1,0 +1,72 @@
+/* src/components/UpdateCardSelection/UpdateCardSelection.css */
+.update-card-selection-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-selection-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card-selection-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.delete-section {
+  margin-right: 1rem;
+}
+
+.delete-icon {
+  background: none;
+  border: none;
+  color: #0062e6;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.card-name {
+  flex-grow: 1;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+.update-card-button {
+  background-color: #ffd700;
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.update-card-button:hover {
+  background-color: #e6c200;
+}
+
+/* Add these styles to your existing UpdateCardSelection.css file */
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-name {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.card-id {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
