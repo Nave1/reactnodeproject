@@ -12,6 +12,7 @@
 //    - Displays appropriate error messages and alerts if login fails.
 // Additional: This component handles both form input changes and submission, providing real-time validation feedback.
 // src/pages/Login.jsx
+// Login.jsx
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -59,7 +60,14 @@ const Login = () => {
     })
       .then((response) => {
         if (response.data.success) {
-          Cookies.set('user', JSON.stringify(response.data.user), { expires: 1 });
+          // FIX: Only store minimal info in cookie
+          const minimalUser = {
+            id: response.data.user.id,
+            email: response.data.user.email,
+            role: response.data.user.role,
+            firstName: response.data.user.firstName
+          };
+          Cookies.set('user', JSON.stringify(minimalUser), { expires: 1 });
           setLoggedIn(true);
           navigate('/');
         } else {

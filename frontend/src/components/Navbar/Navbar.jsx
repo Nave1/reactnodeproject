@@ -65,6 +65,13 @@ const Navbar = () => {
         />
       </LogoContainer>
 
+      {/* User Management link (admin only) */}
+      {user?.role === 'admin' && (
+      <NavLink to="/user-management" onClick={closeMenu}>
+        User Management
+      </NavLink>
+      )}
+
       {/* Custom animated hamburger menu */}
       <Hamburger onClick={toggleMenu}>
         <Bar isOpen={isOpen} />
@@ -81,7 +88,7 @@ const Navbar = () => {
         {user ? (
           <>
             <span style={{ color: '#ffd700', marginLeft: '20px', fontWeight: 'bold' }}>
-              Welcome, {user.firstName}!
+              Welcome, {user.firstName || user.email}!
             </span>
             <NavBtn>
               <NavBtnLink as="button" onClick={handleLogout}>

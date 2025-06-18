@@ -116,6 +116,12 @@ auth.post('/login', (req, res) => {
     if (results.length === 0) return res.status(404).json({ success: false, message: 'User not found' });
 
     const user = results[0];
+
+    // BLOCK DISABLED USERS HERE
+    if (user.status && user.status === 'disabled') {
+      return res.status(403).json({ success: false, message: 'Your account is disabled. Please contact support.' });
+    }
+
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(403).json({ success: false, message: 'Wrong password' });
     if (user.is_Activated === 0) {

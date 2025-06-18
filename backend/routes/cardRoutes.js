@@ -123,4 +123,48 @@ cards.put('/:slug/close', ensureAuth, (req, res) => {
   });
 });
 
+// --- Get All Statuses for a Card ---
+cards.get('/:slug/statuses', ensureAuth, (req, res) => {
+  const { slug } = req.params;
+  pool.query('SELECT id FROM cards WHERE slug = ?', [slug], (err, cardRows) => {
+    if (err || cardRows.length === 0) return res.status(404).json({ success: false, message: 'Card not found' });
+    const cardId = cardRows[0].id;
+
+    pool.query(
+      'SELECT status_text, status_date FROM card_statuses WHERE card_id = ? ORDER BY status_date DESC',
+      [cardId],
+      (err, rows) => {
+        if (err) return res.status(500).json({ success: false, error: err });
+        return res.json(rows);
+      }
+    );
+  });
+});
+
+// --- Add New Status to a Card (admin only) ---
+cards.post('/:slug/statuses', ensureAuth, (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Admins only' });
+  }
+  const { slug } = req.params;
+  const { status_text } = req.body;
+  if (!status_text || !status_text.trim()) {
+    return res.status(400).json({ success: false, message: 'Status text required' });
+  }
+
+  pool.query('SELECT id FROM cards WHERE slug = ?', [slug], (err, cardRows) => {
+    if (err || cardRows.length === 0) return res.status(404).json({ success: false, message: 'Card not found' });
+    const cardId = cardRows[0].id;
+
+    pool.query(
+      'INSERT INTO card_statuses (card_id, status_text) VALUES (?, ?)',
+      [cardId, status_text],
+      (err) => {
+        if (err) return res.status(500).json({ success: false, error: err });
+        return res.status(201).json({ success: true, message: 'Status added' });
+      }
+    );
+  });
+});
+
 module.exports = cards;

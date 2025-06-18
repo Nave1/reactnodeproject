@@ -21,6 +21,7 @@ import "./App.css";
 import VerifyEmail from './pages/VerifyEmail';
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import UserManagement from './pages/UserManagement';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/user-management" element={<UserManagement />} />
         </Routes>
         <Footer />
       </CardsProvider>

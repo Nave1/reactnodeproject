@@ -2,6 +2,7 @@
 // in: No props are passed to this provider.
 // out: Provides a global context containing the list of cards and functions to fetch, add, update, delete, and close cards.
 // Additional: Wraps the application with CardsContext.Provider so that child components can access card-related state and actions.
+// CardsContext.js
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import { api } from '../api/api';
@@ -29,7 +30,7 @@ export const CardsProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await api.get('/cards');
+      const { data } = await api.get('/api/cards');
       setCards(data);
     } catch (err) {
       console.error('Error fetching cards:', err);
@@ -45,7 +46,7 @@ export const CardsProvider = ({ children }) => {
 
   const addCard = async (formData) => {
     try {
-      const response = await api.post('/cards', formData, {
+      const response = await api.post('/api/cards', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       fetchCards();
@@ -58,7 +59,7 @@ export const CardsProvider = ({ children }) => {
 
   const updateCard = async (slug, formData) => {
     try {
-      const response = await api.put(`/cards/${slug}`, formData, {
+      const response = await api.put(`/api/cards/${slug}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       fetchCards();
@@ -71,7 +72,7 @@ export const CardsProvider = ({ children }) => {
 
   const deleteCard = async (slug) => {
     try {
-      const response = await api.delete(`/cards/${slug}`);
+      const response = await api.delete(`/api/cards/${slug}`);
       fetchCards();
       return response.data;
     } catch (err) {
@@ -82,7 +83,7 @@ export const CardsProvider = ({ children }) => {
 
   const closeTask = async (slug) => {
     try {
-      const response = await api.put(`/cards/${slug}/close`);
+      const response = await api.put(`/api/cards/${slug}/close`);
       fetchCards();
       return response.data;
     } catch (err) {
@@ -91,12 +92,19 @@ export const CardsProvider = ({ children }) => {
     }
   };
 
+  // UPDATED login: store only id, email, role in cookie
   const login = async (email, password) => {
     try {
       const { data } = await api.post('/login', { email, password });
       if (data.success) {
-        Cookies.set('user', JSON.stringify(data.user), { expires: 1 });
-        setUserInfo(data.user);
+        const minimalUser = {
+          id: data.user.id,
+          email: data.user.email,
+          role: data.user.role,
+          fullName: data.user.firstName
+        };
+        Cookies.set('user', JSON.stringify(minimalUser), { expires: 1 });
+        setUserInfo(minimalUser);
       }
       return data;
     } catch (err) {

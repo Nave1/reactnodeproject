@@ -23,6 +23,13 @@ const CardPage = () => {
   const { cards } = useContext(CardsContext);
   const [userRole, setUserRole] = useState(null);
 
+  // New: Status history state
+  const [statuses, setStatuses] = useState([]);
+  const [loadingStatuses, setLoadingStatuses] = useState(true);
+  const [statusError, setStatusError] = useState('');
+  const [newStatus, setNewStatus] = useState('');
+  const [addingStatus, setAddingStatus] = useState(false);
+
   useEffect(() => {
     const storedUser = Cookies.get('user');
     if (storedUser) {
@@ -36,6 +43,61 @@ const CardPage = () => {
   }, []);
 
   const card = cards.find(c => c.slug === cardSlug);
+
+  // Fetch all status history for this card
+  useEffect(() => {
+    if (!card) {
+      setStatuses([]);
+      setLoadingStatuses(false);
+      return;
+    }
+    const fetchStatuses = async () => {
+      setLoadingStatuses(true);
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/cards/${card.slug}/statuses`, {
+          credentials: 'include', // if you use cookies for auth
+        });
+        if (!response.ok) throw new Error('Failed to fetch statuses');
+        const data = await response.json();
+        setStatuses(data);
+      } catch (err) {
+        setStatuses([]);
+      }
+      setLoadingStatuses(false);
+    };
+    fetchStatuses();
+  }, [card]);
+
+  // Handle admin adding a new status
+  const handleAddStatus = async () => {
+    setStatusError('');
+    if (!newStatus.trim()) {
+      setStatusError('Status text cannot be empty.');
+      return;
+    }
+    setAddingStatus(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/cards/${card.slug}/statuses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // if you use cookies for auth
+        body: JSON.stringify({ status_text: newStatus }),
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to add status');
+      }
+      setNewStatus('');
+      // Refresh status list
+      const refresh = await fetch(`${process.env.REACT_APP_API_URL}/api/cards/${card.slug}/statuses`, {
+        credentials: 'include',
+      });
+      setStatuses(await refresh.json());
+    } catch (err) {
+      setStatusError(err.message);
+    }
+    setAddingStatus(false);
+  };
 
   if (!card) {
     return (
@@ -77,8 +139,46 @@ const CardPage = () => {
           </div>
         )}
 
+        {/* Status History Section */}
+        <div className="card-status-section">
+          <h3>Status History</h3>
+          {loadingStatuses ? (
+            <div>Loading status history...</div>
+          ) : statuses.length > 0 ? (
+            <ul>
+              {statuses.map((s, idx) => (
+                <li key={idx}>
+                  <div className="status-date">
+                    {new Date(s.status_date).toLocaleString()}
+                  </div>
+                  <div className="status-text">{s.status_text}</div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="status-empty">There is no status yet.</div>
+          )}
+        </div>
+
+        {/* Admin: Add new status */}
+        {userRole === USER_ROLES.ADMIN && (
+          <div className="add-status-section">
+            <input
+              type="text"
+              placeholder="Enter new status"
+              value={newStatus}
+              onChange={e => setNewStatus(e.target.value)}
+              disabled={addingStatus}
+              className="card-input"
+            />
+            <button onClick={handleAddStatus} disabled={addingStatus} className="card-button" >
+              {addingStatus ? 'Adding...' : 'Add Status'}
+            </button>
+            {statusError && <div className="status-error">{statusError}</div>}
+          </div>
+        )}
+
         <div className="card-buttons">
-          {/* Show the "Update Card" button only for users and for open cards */}
           {userRole === USER_ROLES.USER && card.status !== STATUS.CLOSED && (
             <Link to={`/edit/${card.slug}`} className="card-button">
               Update Card
