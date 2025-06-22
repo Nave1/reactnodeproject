@@ -13,11 +13,10 @@
 // Additional: This component handles both form input changes and submission, providing real-time validation feedback.
 // src/pages/Login.jsx
 // Login.jsx
-import React, { useState } from 'react';
-import Cookies from 'js-cookie';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
-import { login as loginAPI } from '../api/auth';
+import { CardsContext } from '../contexts/CardsContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +26,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const { login } = useContext(CardsContext);
 
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
@@ -43,7 +43,7 @@ const Login = () => {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = {
@@ -54,33 +54,14 @@ const Login = () => {
     setErrors(newErrors);
     if (Object.values(newErrors).some((err) => err !== '')) return;
 
-    loginAPI({
-      email: formData.email,
-      password: formData.password,
-    })
-      .then((response) => {
-        if (response.data.success) {
-          // FIX: Only store minimal info in cookie
-          const minimalUser = {
-            id: response.data.user.id,
-            email: response.data.user.email,
-            role: response.data.user.role,
-            firstName: response.data.user.firstName
-          };
-          Cookies.set('user', JSON.stringify(minimalUser), { expires: 1 });
-          setLoggedIn(true);
-          navigate('/');
-        } else {
-          alert(response.data.message || 'Error logging in.');
-        }
-      })
-      .catch((error) => {
-        if (error.response?.data?.message) {
-          alert(error.response.data.message);
-        } else {
-          alert('Error logging in.');
-        }
-      });
+    const data = await login(formData.email, formData.password);
+
+    if (data.success) {
+      setLoggedIn(true);
+      navigate('/');
+    } else {
+      alert(data.message || 'Error logging in.');
+    }
   };
 
   if (loggedIn) {

@@ -15,16 +15,35 @@ export const CardsProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
 
+  // Fetch detailed user info including points
+  const fetchUserInfo = useCallback(async () => {
+    try {
+      const { data } = await api.get('/api/me');
+      setUserInfo(data);
+      Cookies.set('user', JSON.stringify({
+        id: data.id,
+        email: data.email,
+        role: data.role,
+        firstName: data.firstName,
+        points: data.points
+      }), { expires: 1 });
+    } catch (err) {
+      console.error('Error fetching user info:', err);
+    }
+  }, []);
+
+  // On mount, set userInfo from cookie, then fetch full info (for points)
   useEffect(() => {
     const stored = Cookies.get('user');
     if (stored) {
       try {
         setUserInfo(JSON.parse(stored));
+        fetchUserInfo(); // Always update with live info, including points
       } catch (e) {
         console.error('Error parsing user cookie:', e);
       }
     }
-  }, []);
+  }, [fetchUserInfo]);
 
   const fetchCards = useCallback(async () => {
     setLoading(true);
@@ -81,10 +100,12 @@ export const CardsProvider = ({ children }) => {
     }
   };
 
+  // When a card is closed, also refresh user info to update points!
   const closeTask = async (slug) => {
     try {
       const response = await api.put(`/api/cards/${slug}/close`);
       fetchCards();
+      await fetchUserInfo(); // Fetch updated points after closing card
       return response.data;
     } catch (err) {
       console.error('Error closing task:', err);
@@ -92,19 +113,20 @@ export const CardsProvider = ({ children }) => {
     }
   };
 
-  // UPDATED login: store only id, email, role in cookie
+  // Update login to immediately fetch full info (with points) after successful login
   const login = async (email, password) => {
     try {
-      const { data } = await api.post('/login', { email, password });
+      const { data } = await api.post('/api/login', { email, password });
       if (data.success) {
         const minimalUser = {
           id: data.user.id,
           email: data.user.email,
           role: data.user.role,
-          fullName: data.user.firstName
+          firstName: data.user.firstName
         };
         Cookies.set('user', JSON.stringify(minimalUser), { expires: 1 });
         setUserInfo(minimalUser);
+        await fetchUserInfo(); // This ensures points are loaded after login
       }
       return data;
     } catch (err) {
@@ -132,6 +154,7 @@ export const CardsProvider = ({ children }) => {
       closeTask,
       login,
       logout,
+      fetchUserInfo, // Exported in case you want to manually refresh
     }}>
       {children}
     </CardsContext.Provider>

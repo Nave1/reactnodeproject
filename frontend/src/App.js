@@ -22,6 +22,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import UserManagement from './pages/UserManagement';
+import Rewards from './pages/Rewards';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/user-management" element={<UserManagement />} />
+          <Route path="/rewards" element={<Rewards />} />
         </Routes>
         <Footer />
       </CardsProvider>

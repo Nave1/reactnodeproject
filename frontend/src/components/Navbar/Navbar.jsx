@@ -6,7 +6,7 @@
 // Additional: This component listens to route changes to update the user state from cookies,
 //      and provides logout functionality that clears the user cookie and redirects to the home page.
 // src/components/Navbar/index.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import {
@@ -18,13 +18,21 @@ import {
   NavBtnLink,
   Hamburger,
   Bar,
+  NavLinksGroup,
+  NavSeparator
 } from './NavbarElements';
+
+// Import the context
+import { CardsContext } from '../../contexts/CardsContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Get the most up-to-date user info (including points) from context
+  const { userInfo } = useContext(CardsContext);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -48,13 +56,10 @@ const Navbar = () => {
   }, [location]);
 
   const handleLogout = () => {
-    Cookies.remove('user'); // delete cookie
-
+    Cookies.remove('user');
     setUser(null);
     navigate('/login');
   };
-
-  
 
   return (
     <Nav>
@@ -65,12 +70,23 @@ const Navbar = () => {
         />
       </LogoContainer>
 
-      {/* User Management link (admin only) */}
-      {user?.role === 'admin' && (
-      <NavLink to="/user-management" onClick={closeMenu}>
-        User Management
-      </NavLink>
-      )}
+      <NavLinksGroup>
+        {/* Admin-only: User Management */}
+        {user?.role === 'admin' && (
+          <>
+            <NavLink to="/user-management" onClick={closeMenu}>
+              User Management
+            </NavLink>
+            <NavSeparator>|</NavSeparator>
+          </>
+        )}
+        {/* Rewards: All logged-in users */}
+        {user && (
+          <NavLink to="/rewards" onClick={closeMenu}>
+            Rewards
+          </NavLink>
+        )}
+      </NavLinksGroup>
 
       {/* Custom animated hamburger menu */}
       <Hamburger onClick={toggleMenu}>
@@ -79,17 +95,24 @@ const Navbar = () => {
         <Bar isOpen={isOpen} />
       </Hamburger>
 
-      {/* Optional fallback icon toggle buttons, hidden by default via styled-components */}
-      {/* Uncomment below if you want to use icon version instead of Hamburger + Bar */}
-      {/* {isOpen ? <Times onClick={toggleMenu} /> : <Bars onClick={toggleMenu} />} */}
-
       <NavMenu isOpen={isOpen}>
-
         {user ? (
           <>
             <span style={{ color: '#ffd700', marginLeft: '20px', fontWeight: 'bold' }}>
               Welcome, {user.firstName || user.email}!
             </span>
+            {/* POINTS DISPLAY - right after welcome */}
+            {userInfo && userInfo.role !== 'admin' && (
+              <span style={{
+                color: '#ffd700',
+                marginLeft: '16px',
+                fontWeight: 'bold',
+                fontSize: '1.05rem',
+                letterSpacing: '0.5px',
+              }}>
+                | Points: {userInfo.points ?? 0}
+              </span>
+            )}
             <NavBtn>
               <NavBtnLink as="button" onClick={handleLogout}>
                 Log Out

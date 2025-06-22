@@ -1,0 +1,140 @@
+.rewards-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.rewards-title {
+  margin-bottom: 2rem;
+  color: #176B87;
+}
+
+.reward-plus-box {
+  width: 70px;
+  height: 70px;
+  margin: 0 0 2rem 0;
+  background: #e7f6ff;
+  border: 2px dashed #176B87;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.reward-plus-box:hover {
+  background: #d2ecfa;
+  box-shadow: 0 4px 16px rgba(23, 107, 135, 0.08);
+}
+
+.reward-form {
+  margin-bottom: 2rem;
+  padding: 20px;
+  background: #f2f2f2;
+  border-radius: 12px;
+}
+
+.reward-form input[type="text"],
+.reward-form input[type="number"] {
+  margin-right: 12px;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.reward-form button {
+  padding: 0.5rem 1rem;
+  margin-right: 8px;
+}
+
+.reward-item {
+  background: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reward-item-title {
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.reward-item-description {
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.reward-item-points {
+  color: #008c6e;
+  font-weight: 500;
+}
+
+.reward-actions .action-btn {
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  padding: 0.45rem 1.2rem;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  margin-right: 10px;
+  margin-left: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.reward-actions .action-btn.edit-btn {
+  background: #176B87;
+  color: #fff;
+}
+
+.reward-actions .action-btn.edit-btn:hover {
+  background: #1275ab;
+}
+
+.reward-actions .action-btn.delete-btn {
+  background: #ffb2b2;
+  color: #a80000;
+}
+
+.reward-actions .action-btn.delete-btn:hover {
+  background: #ff6464;
+  color: #fff;
+}
+
+
+.reward-select-btn {
+  background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.4rem;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+  transition: background 0.18s, transform 0.14s, box-shadow 0.14s;
+  margin-left: 10px;
+  margin-right: 0;
+  letter-spacing: 0.5px;
+  outline: none;
+}
+.reward-select-btn:hover:enabled {
+  background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 12px rgba(67, 206, 162, 0.15);
+}
+.reward-select-btn:disabled {
+  background: #e3e3e3;
+  color: #bbbbbb;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+

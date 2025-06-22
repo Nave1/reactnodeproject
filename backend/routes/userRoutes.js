@@ -65,6 +65,59 @@ userRoutes.put('/users/:id/status', ensureAuth, ensureAdmin, (req, res) => {
   );
 });
 
+userRoutes.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res.status(400).json({ success: false, message: 'Email and password required.' });
+
+  pool.query(
+    'SELECT idNumber AS id, firstName, lastName, email, password, role, points FROM users WHERE email = ?',
+    [email],
+    (err, users) => {
+      if (err) return res.status(500).json({ success: false, message: 'Database error.' });
+      if (!users.length)
+        return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+
+      const user = users[0];
+      const bcrypt = require('bcrypt');
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err) return res.status(500).json({ success: false, message: 'Error checking password.' });
+        if (!result) return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+
+        // Remove password before sending to frontend
+        delete user.password;
+
+        // Create JWT token
+        const jwt = require('jsonwebtoken');
+        const token = jwt.sign({ id: user.id, role: user.role }, 'your-secret-key', { expiresIn: '1d' });
+
+        res.cookie('token', token, { httpOnly: true, sameSite: 'lax' }); // optional, for cookies
+        return res.json({
+          success: true,
+          user,
+          token,
+        });
+      });
+    }
+  );
+});
+
+
+
+// Get current user's info (authenticated)
+userRoutes.get('/me', ensureAuth, (req, res) => {
+  const userId = req.user.id; // set by ensureAuth middleware
+  pool.query(
+    'SELECT idNumber AS id, firstName, lastName, email, role, points FROM users WHERE idNumber = ?',
+    [userId],
+    (err, users) => {
+      if (err || !users.length) return res.status(404).json({ success: false, error: err || 'User not found' });
+      res.json(users[0]);
+    }
+  );
+});
+
+
 
 
 module.exports = userRoutes;

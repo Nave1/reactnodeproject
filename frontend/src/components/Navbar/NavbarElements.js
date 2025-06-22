@@ -174,3 +174,22 @@ export const Times = styled(FaTimes)`
     color: #fff;
   }
 `;
+
+// Group container for links (admin/user nav links)
+export const NavLinksGroup = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 1.5rem;
+  gap: 0.5rem;
+`;
+
+// The separator (|)
+export const NavSeparator = styled.span`
+  margin: 0 0.4rem;
+  color: #ffd700;
+  font-size: 20px;
+  font-weight: 600;
+  user-select: none;
+  letter-spacing: 1px;
+`;
+

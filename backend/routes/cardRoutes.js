@@ -96,7 +96,7 @@ cards.delete('/:slug', ensureAuth, (req, res) => {
   });
 });
 
-// --- Close Card (Notify User) ---
+// --- Close Card ---
 cards.put('/:slug/close', ensureAuth, (req, res) => {
   const { slug } = req.params;
   pool.query('SELECT * FROM cards WHERE slug = ?', [slug], async (err, rows) => {
@@ -106,22 +106,33 @@ cards.put('/:slug/close', ensureAuth, (req, res) => {
       return res.status(403).json({ success: false, message: 'Unauthorized' });
     }
 
+    // 1. Update card status
     pool.query('UPDATE cards SET status = ? WHERE slug = ?', ['closed', slug], async (err) => {
       if (err) return res.status(500).json({ success: false, error: err });
 
-      if (card.email) {
-        try {
-          const mail = cardClosed(card.email, card.fullName, card.title);
-          await sendMail(mail.to, mail.subject, mail.html);
-        } catch (mailErr) {
-          console.error('Error sending closure email:', mailErr);
+      // 2. Add points to the user
+      pool.query('UPDATE users SET points = points + 150 WHERE idNumber = ?', [card.user_id], async (pointsErr) => {
+        if (pointsErr) {
+          console.error('Error adding points:', pointsErr);
         }
-      }
 
-      return res.json({ success: true, message: 'Card closed and user notified by email.' });
+        // 3. Send email
+        if (card.email) {
+          try {
+            const mail = cardClosed(card.email, card.fullName, card.title);
+            await sendMail(mail.to, mail.subject, mail.html);
+          } catch (mailErr) {
+            console.error('Error sending closure email:', mailErr);
+          }
+        }
+
+        // 4. Respond to client
+        return res.json({ success: true, message: 'Card closed, user rewarded, and notified by email.' });
+      });
     });
   });
 });
+
 
 // --- Get All Statuses for a Card ---
 cards.get('/:slug/statuses', ensureAuth, (req, res) => {
